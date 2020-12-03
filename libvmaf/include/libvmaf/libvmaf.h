@@ -58,6 +58,10 @@ typedef struct VmafConfiguration {
 
 typedef struct VmafContext VmafContext;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Allocate and open a VMAF instance.
  *
@@ -317,5 +321,10 @@ int vmaf_write_output(VmafContext *vmaf, const char *output_path,
  * Get libvmaf version.
  */
 const char *vmaf_version(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif /* __VMAF_H__ */

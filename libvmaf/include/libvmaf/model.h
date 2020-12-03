@@ -35,6 +35,10 @@ typedef struct VmafModelConfig {
     uint64_t flags;
 } VmafModelConfig;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int vmaf_model_load(VmafModel **model, VmafModelConfig *cfg,
                     const char *version);
 
@@ -72,5 +76,10 @@ int vmaf_model_collection_load_from_path(VmafModel **model,
                                          const char *path);
 
 void vmaf_model_collection_destroy(VmafModelCollection *model_collection);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif /* __VMAF_MODEL_H__ */

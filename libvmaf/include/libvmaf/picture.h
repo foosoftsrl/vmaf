@@ -39,9 +39,18 @@ typedef struct {
     VmafRef *ref;
 } VmafPicture;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int vmaf_picture_alloc(VmafPicture *pic, enum VmafPixelFormat pix_fmt,
                        unsigned bpc, unsigned w, unsigned h);
 
 int vmaf_picture_unref(VmafPicture *pic);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif /* __VMAF_PICTURE_H__ */
