@@ -30,7 +30,7 @@
 #include <stdint.h>
 
 #include "x86/cpu.h"
-
+#include <stdio.h>
 typedef struct {
     uint32_t eax, ebx, ecx, edx;
 } CpuidRegisters;
@@ -39,6 +39,28 @@ void vmaf_cpu_cpuid(CpuidRegisters *regs, unsigned leaf, unsigned subleaf);
 uint64_t vmaf_cpu_xgetbv(unsigned xcr);
 
 #define X(reg, mask) (((reg) & (mask)) == (mask))
+
+// Not clear what is happening... on mingw... it crashes horribly
+#ifdef _WIN32
+#include <intrin.h>
+#include <xsaveintrin.h>
+#define vmaf_cpu_cpuid vmaf_cpu_cpuid_win32
+#define vmaf_cpu_xgetbv vmaf_cpu_xgetbv_win32
+static void vmaf_cpu_cpuid_win32(CpuidRegisters *out, unsigned leaf, unsigned subleaf) {
+        /* Windows */
+        int regs[4];
+        __cpuidex(regs, leaf, subleaf);
+        out->eax = regs[0];
+        out->ebx = regs[1];
+        out->ecx = regs[2];
+        out->edx = regs[3];
+}
+
+static uint64_t vmaf_cpu_xgetbv_win32(uint32_t xcr) {
+  return _xgetbv(xcr);
+}
+
+#endif
 
 unsigned vmaf_get_cpu_flags_x86(void) {
     CpuidRegisters r = { 0 };
