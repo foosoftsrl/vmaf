@@ -18,15 +18,13 @@
 
 #include "config.h"
 #include "cpu.h"
+#include <stdio.h>
+#include <stdatomic.h>
 
-static unsigned flags = 0;
 static unsigned flags_mask = -1;
 
 void vmaf_init_cpu(void)
 {
-#if ARCH_X86
-    flags = vmaf_get_cpu_flags_x86();
-#endif
 }
 
 void vmaf_set_cpu_flags_mask(const unsigned mask)
@@ -36,5 +34,10 @@ void vmaf_set_cpu_flags_mask(const unsigned mask)
 
 unsigned vmaf_get_cpu_flags(void)
 {
+    int flags = 0;
+#if ARCH_X86
+    flags = vmaf_get_cpu_flags_x86();
+#endif
+//    fprintf(stderr, "%f flags = %d mask = %d\n", 0.0, flags, flags_mask);
     return flags & flags_mask;
 }
