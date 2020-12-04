@@ -1,0 +1,12 @@
+LIBRARY    libvmaf
+EXPORTS
+    vmaf_init                          
+    vmaf_version                       
+	vmaf_model_load
+	vmaf_model_destroy
+	vmaf_picture_alloc
+	vmaf_picture_unref
+	vmaf_use_features_from_model
+	vmaf_read_pictures
+	vmaf_score_pooled
+	vmaf_close

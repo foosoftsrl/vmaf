@@ -1,0 +1,24 @@
+La build l'ho fatta su WSL 20.04 ubuntu, utilizzando il cross-compilatore di ubuntu
+
+
+da vmaf/libvmaf
+
+mkdir build
+cd build
+meson .. --buildtype release --cross-file ../../mingw.cross
+
+E poi aggiungere in testa al comando di link (che si prende con un ninja -v)
+
+   ../libvmaf.def -o src/libvmaf.dll -Wl,--out-implib,src/libvmaf.lib 
+
+Per esempio...
+
+/usr/bin/x86_64-w64-mingw32-g++-posix ../libvmaf.def -o src/libvmaf.dll -Wl,--out-implib,src/libvmaf.lib 'src/25a6634@@vmaf@sha/meson-generated_.._vmaf_v0.6.1.json.c.o' 'src/25a6634@@vmaf@sha/meson-generated_.._vmaf_b_v0.6.3.json.c.o' 'src/25a6634@@vma
+f@sha/meson-generated_.._vmaf_v0.6.1neg.json.c.o' 'src/25a6634@@vmaf@sha/libvmaf.c.o' 'src/25a6634@@vmaf@sha/compute_vmaf.c.o' 'src/25a6634@@vmaf@sha/predict.c.o' 'src/25a6634@@vmaf@sha/model.c.o' 'src/25a6634@@vmaf@sha/svm.cpp.o' 'src/25a6634@@vmaf@sha/picture.c.o' 'src/25a6634@@vmaf@sha/mem.c.o' 'src/25a6634@@vmaf
+@sha/output.c.o' 'src/25a6634@@vmaf@sha/fex_ctx_vector.c.o' 'src/25a6634@@vmaf@sha/thread_pool.c.o' 'src/25a6634@@vmaf@sha/dict.c.o' 'src/25a6634@@vmaf@sha/opt.c.o' 'src/25a6634@@vmaf@sha/ref.c.o' 'src/25a6634@@vmaf@sha/read_json_model.c.o' 'src/25a6634@@vmaf@sha/pdjson.c.o' 'src/25a6634@@x86_avx2@sta/feature_common
+_convolution_avx.c.o' 'src/25a6634@@x86_avx2@sta/feature_x86_motion_avx2.c.o' 'src/25a6634@@x86_avx2@sta/feature_x86_vif_avx2.c.o' 'src/25a6634@@x86_avx2@sta/feature_x86_adm_avx2.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_picture_copy.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_integer_psnr.c.o' 'src/25a6634@
+@libvmaf_feature@sta/feature_psnr_hvs.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_feature_extractor.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_alias.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_integer_adm.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_feature_collector.c.o' 'src/25a6634@@libvmaf_feature@st
+a/feature_integer_motion.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_integer_vif.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_integer_ssim.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_ciede.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_common_alignment.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_float_ssi
+m.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_float_ms_ssim.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_ssim.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_ms_ssim.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_iqa_decimate.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_iqa_ssim_tools.c.o' 'src/25a6634@@libvma
+f_feature@sta/feature_iqa_math_utils.c.o' 'src/25a6634@@libvmaf_feature@sta/feature_iqa_convolve.c.o' 'src/25a6634@@libvmaf_cpu@sta/cpuid.obj' 'src/25a6634@@libvmaf_cpu@sta/cpu.c.o' 'src/25a6634@@libvmaf_cpu@sta/x86_cpu.c.o' -Wl,--as-needed -Wl,--no-undefined -Wl,-O1 -shared -fPIC -Wl,--start-group -Wl,-soname,libvm
+af.so.1 -pthread -lm -Wl,--end-group
