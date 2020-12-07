@@ -1,17 +1,16 @@
 import unittest
 
+import numpy as np
+
 from vmaf.core.asset import Asset
-
 from vmaf.config import VmafConfig
-
+from vmaf.core.vmafexec_feature_extractor import FloatMotionFeatureExtractor, IntegerMotionFeatureExtractor, \
+    FloatVifFeatureExtractor, FloatAdmFeatureExtractor, IntegerVifFeatureExtractor, IntegerPsnrFeatureExtractor, \
+    IntegerAdmFeatureExtractor, CIEDE2000FeatureExtractor
 from test.testutil import set_default_576_324_videos_for_testing, \
     set_default_576_324_12bit_videos_for_testing, \
     set_default_576_324_16bit_videos_for_testing, \
     set_default_576_324_10bit_videos_for_testing
-
-from vmaf.core.vmafexec_feature_extractor import FloatMotionFeatureExtractor, IntegerMotionFeatureExtractor, \
-    FloatVifFeatureExtractor, FloatAdmFeatureExtractor, IntegerVifFeatureExtractor, IntegerPsnrFeatureExtractor, \
-    IntegerAdmFeatureExtractor
 
 
 class FeatureExtractorTest(unittest.TestCase):
@@ -775,6 +774,20 @@ class FeatureExtractorTest(unittest.TestCase):
         self.fextractor.run(parallelize=True)
         results = self.fextractor.results
         self.assertAlmostEqual(results[0]['integer_ADM_feature_adm2_score'], 1.116609, places=6)  # float 1.116595
+
+    def test_run_ciede2000_fextractor(self):
+        ref_path, dis_path, asset, asset_original = set_default_576_324_videos_for_testing()
+        self.fextractor = CIEDE2000FeatureExtractor(
+            [asset, asset_original],
+            None, fifo_mode=False,
+            result_store=None
+        )
+        self.fextractor.run(parallelize=True)
+        results = self.fextractor.results
+        try: self.assertAlmostEqual(results[0]['CIEDE2000_feature_ciede2000_score'], 33.10755745833333, places=4)
+        except AssertionError as e: self.verificationErrors.append(str(e))
+        try: self.assertAlmostEqual(results[1]['CIEDE2000_feature_ciede2000_score'], np.float('inf'), places=4)
+        except AssertionError as e: self.verificationErrors.append(str(e))
 
 
 if __name__ == '__main__':
